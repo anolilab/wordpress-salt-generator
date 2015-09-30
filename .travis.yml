@@ -1,0 +1,52 @@
+language: php
+
+php:
+  - 5.5.9
+  - 5.5
+  - 5.6
+  - 7.0
+  - hhvm
+  - nightly
+
+env:
+  global:
+    - setup=basic
+
+matrix:
+  include:
+    - php: 5.5.9
+      env: setup=lowest
+    - php: 5.5.9
+      env: setup=stable
+  allow_failures:
+    - env: setup=lowest
+    - env: setup=stable
+    - php: 7.0
+    - php: nightly
+    - php: hhvm
+  fast_finish: true
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_install:
+  - composer self-update
+  - travis_retry composer self-update
+  - travis_retry composer install --prefer-source --no-interaction
+  - OCULAR_ENV='5.5.9'
+
+install:
+  - curl http://get.sensiolabs.org/security-checker.phar -o security-checker.phar
+  - if [[ $setup = 'basic' ]]; then travis_retry composer install --no-interaction --prefer-source; fi
+  - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-stable; fi
+  - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-source --no-interaction --prefer-lowest --prefer-stable; fi
+
+
+script:
+  - php -n security-checker.phar security:check --format=simple
+  - vendor/bin/phpunit --verbose --coverage-text --coverage-clover=build/logs/coverage.clover
+  - if [ $(phpenv version-name) = $OCULAR_ENV ]; then wget https://scrutinizer-ci.com/ocular.phar; php ocular.phar code-coverage:upload --format=php-clover build/logs/coverage.clover; fi
+

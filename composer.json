@@ -1,0 +1,56 @@
+{
+    "name"       : "anolilab/wp-salt-generator",
+    "type"       : "library",
+    "description": "Generates the salts for the Wordpress Composer projects.",
+    "keywords"   : [
+        "wordpress", "salts", "generator", "composer"
+    ],
+    "license"    : "MIT",
+    "homepage"   : "https://github.com/anolilab/wp-salt-generator",
+    "support"    : {
+        "issues"      : "https://github.com/anolilab/wp-salt-generator/issues",
+        "source"      : "https://github.com/anolilab/wp-salt-generator"
+    },
+    "authors"    : [
+        {
+            "name"    : "Daniel Bannert",
+            "email"   : "d.bannert@anolilab.de",
+            "homepage": "http://anolilab.de",
+            "role"    : "Developer"
+        }
+    ],
+    "require": {
+        "php"                                            : ">=5.4.0",
+        "ircmaxell/random-lib"                           : "^1.1"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer"                            : "~1.10",
+        "mockery/mockery"                                : "~0.9.4",
+        "phpunit/phpunit"                                : "~4.8.8",
+        "scrutinizer/ocular"                             : "~1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Anolilab\\Wordpress\\SaltGenerator\\"       : "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Anolilab\\Wordpress\\SaltGenerator\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master"                                 : "1.0.0-dev"
+        }
+    },
+    "scripts": {
+        "test"                                           : "phpunit",
+        "check-cs"                                       : "php-cs-fixer.phar fix -v --dry-run",
+        "fix-cs"                                         : "php-cs-fixer.phar fix"
+    },
+    "suggest": {
+    },
+    "minimum-stability"                                  : "dev",
+    "prefer-stable"                                      : true
+}
