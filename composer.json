@@ -1,5 +1,5 @@
 {
-    "name"       : "anolilab/wp-salt-generator",
+    "name"       : "anolilab/wordpress-salt-generator",
     "type"       : "library",
     "description": "Generates the salts for the Wordpress Composer projects.",
     "keywords"   : [
