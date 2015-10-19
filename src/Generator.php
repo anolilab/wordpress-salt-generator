@@ -45,7 +45,7 @@ class Generator
      *
      * @param Event $event
      *
-     * @return int
+     * @return integer|null
      */
     public static function addSalts(Event $event)
     {
@@ -70,13 +70,13 @@ class Generator
             return sprintf("%s='%s'", $key, self::generateSalt());
         }, self::$KEYS);
 
-        self::writeToFile("{$root}/.env", $salts, $event);
+        self::writeToFile(sprintf('%s/.env', $root), $salts, $event);
     }
 
     /**
      * Generates salt.
      *
-     * @param Event $event
+     * @param integer $length
      *
      * @return string
      */
@@ -95,20 +95,21 @@ class Generator
     /**
      * Write to file.
      *
-     * @param  string $file
-     * @param  string $salts
+     * @param string $file
+     * @param array $salts
+     * @param Event $event
      *
-     * @return int
+     * @return integer|null
      */
     protected function writeToFile($file, $salts, Event $event)
     {
         try {
-            if (copy("{$file}.example", $file)) {
+            if (copy(sprintf('%s.example', $file), $file)) {
                 file_put_contents($file, implode($salts, "\n"), FILE_APPEND | LOCK_EX);
                 return 0;
             }
         } catch (\Exception $e) {
-            $event->getIO()->write("<error>An error occured while copying your .env file</error>");
+            $event->getIO()->write('<error>An error occured while copying your .env file</error>');
             return 1;
         }
     }
