@@ -14,6 +14,7 @@ namespace Anolilab\Wordpress\SaltGenerator\Tests;
 
 use Anolilab\Wordpress\SaltGenerator\Generator;
 use Mockery as Mock;
+use Composer\Script\Event;
 
 /**
  * GeneratorTest.
@@ -117,7 +118,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
 class SubGenerator extends Generator
 {
-    public function writeToFile($file, $salts, $event)
+    public function writeToFile($file, $salts, Event $event)
     {
         return parent::writeToFile($file, $salts, $event);
     }
