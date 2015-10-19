@@ -17,7 +17,9 @@ use RandomLib\Factory;
 use SecurityLib\Strength;
 
 /**
+ * Generator.
  *
+ * @author  Daniel Bannert
  */
 class Generator
 {
@@ -37,7 +39,14 @@ class Generator
         'NONCE_SALT'
     ];
 
-    public function addSalts(Event $event)
+    /**
+     * Adds generedted salts to env file.
+     *
+     * @param Event $event
+     *
+     * @return int
+     */
+    public static function addSalts(Event $event)
     {
         $composer = $event->getComposer();
         $root     = $composer->getConfig()->get('home');
@@ -46,7 +55,10 @@ class Generator
         if (!$io->isInteractive()) {
             $generateSalts = $composer->getConfig()->get('generate-salts');
         } else {
-            $generateSalts = $io->askConfirmation('<info>Generate salts and append to .env file?</info> [<comment>Y,n</comment>]? ', true);
+            $generateSalts = $io->askConfirmation(
+                '<info>Generate salts and append to .env file?</info> [<comment>Y,n</comment>]?',
+                true
+            );
         }
 
         if (!$generateSalts) {
@@ -54,22 +66,29 @@ class Generator
         }
 
         $salts = array_map(function ($key) {
-            return sprintf("%s='%s'", $key, $this->generateSalt());
+            return sprintf("%s='%s'", $key, self::generateSalt());
         }, self::$KEYS);
 
-        $this->writeToFile("{$root}/.env", $salts)
+        self::writeToFile("{$root}/.env", $salts, $event);
     }
 
+    /**
+     * Generates salt.
+     *
+     * @param Event $event
+     *
+     * @return string
+     */
     public function generateSalt($length = 64)
     {
         $chars  = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $chars .= '!@#$%^&*()';
         $chars .= '-_ []{}<>~`+=,.;:/?|';
 
-        $factory = new Factory;
+        $factory = new Factory();
         $generator = $factory->getGenerator(new Strength(Strength::MEDIUM));
 
-        return $generator->generate($length, $chars);
+        return $generator->generateString($length, $chars);
     }
 
     /**
@@ -80,17 +99,16 @@ class Generator
      *
      * @return int
      */
-    protected function writeToFile($file, $salts)
+    protected function writeToFile($file, $salts, Event $event)
     {
-        if (copy("{$file}.example", $file)) {
-            file_put_contents($file, implode($salts, "\n"), FILE_APPEND | LOCK_EX);
-
-            return 0;
+        try {
+            if (copy("{$file}.example", $file)) {
+                file_put_contents($file, implode($salts, "\n"), FILE_APPEND | LOCK_EX);
+                return 0;
+            }
+        } catch (\Exception $e) {
+            $event->getIO()->write("<error>An error occured while copying your .env file</error>");
+            return 1;
         }
-
-        $io->write("<error>An error occured while copying your .env file</error>");
-
-        return 1;
     }
-
 }

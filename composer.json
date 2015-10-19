@@ -49,8 +49,6 @@
         "check-cs"                                       : "php-cs-fixer.phar fix -v --dry-run",
         "fix-cs"                                         : "php-cs-fixer.phar fix"
     },
-    "suggest": {
-    },
     "minimum-stability"                                  : "dev",
     "prefer-stable"                                      : true
 }
