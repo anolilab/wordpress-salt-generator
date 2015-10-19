@@ -45,9 +45,9 @@
         }
     },
     "scripts": {
-        "test"                                           : "phpunit",
-        "check-cs"                                       : "php-cs-fixer.phar fix -v --dry-run",
-        "fix-cs"                                         : "php-cs-fixer.phar fix"
+        "test"                                           : "sh vendor/bin/phpunit",
+        "check-cs"                                       : "sh vendor/bin/php-cs-fixer fix -v --dry-run",
+        "fix-cs"                                         : "sh vendor/bin/php-cs-fixer fix"
     },
     "minimum-stability"                                  : "dev",
     "prefer-stable"                                      : true

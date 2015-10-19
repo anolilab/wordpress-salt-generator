@@ -1,4 +1,5 @@
 <?php
+
 namespace Anolilab\Wordpress\SaltGenerator\Tests;
 
 /**
@@ -13,8 +14,8 @@ namespace Anolilab\Wordpress\SaltGenerator\Tests;
  */
 
 use Anolilab\Wordpress\SaltGenerator\Generator;
-use Mockery as Mock;
 use Composer\Script\Event;
+use Mockery as Mock;
 
 /**
  * GeneratorTest.
