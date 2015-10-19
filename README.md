@@ -28,7 +28,13 @@ $ composer require anolilab/wordpress-salt-generator
 ## Usage
 
 ``` php
-echo "test";
+// In your composer.json
+ "config": {
+    "generate-salts": true
+},
+"scripts": {
+    "post-root-package-install": ["Anolilab\\Wordpress\\SaltGenerator\\Generator::addSalts"]
+},
 ```
 
 ## Change log
