@@ -6,10 +6,10 @@
         "wordpress", "salts", "generator", "composer"
     ],
     "license"    : "MIT",
-    "homepage"   : "https://github.com/anolilab/wp-salt-generator",
+    "homepage"   : "https://github.com/anolilab/wordpress-salt-generator",
     "support"    : {
-        "issues"      : "https://github.com/anolilab/wp-salt-generator/issues",
-        "source"      : "https://github.com/anolilab/wp-salt-generator"
+        "issues"      : "https://github.com/anolilab/wordpress-salt-generator/issues",
+        "source"      : "https://github.com/anolilab/wordpress-salt-generator"
     },
     "authors"    : [
         {
