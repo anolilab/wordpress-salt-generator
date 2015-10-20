@@ -1,6 +1,6 @@
 # Changelog
 
-All Notable changes to `wp-salt-generator` will be documented in this file
+All Notable changes to `wordpress-salt-generator` will be documented in this file
 
 ## NEXT - YYYY-MM-DD
 
