@@ -110,7 +110,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
 
         file_put_contents(__DIR__.'/.env.example', '');
 
-        $gen->addSalts($mock);
+        $gen::addSalts($mock);
 
         @unlink(__DIR__.'/.env.example');
         @unlink(__DIR__.'/.env');

@@ -50,7 +50,7 @@ class Generator
     public static function addSalts(Event $event)
     {
         $composer = $event->getComposer();
-        $root     = $composer->getConfig()->get('home');
+        $root     = preg_replace("/\/vendor/", '', $composer->getConfig()->get('vendor-dir'));
         $io       = $event->getIO();
 
         if (!$io->isInteractive()) {
@@ -66,11 +66,13 @@ class Generator
             return 1;
         }
 
-        $salts = array_map(function ($key) {
-            return sprintf("%s='%s'", $key, self::generateSalt());
+        $generator = new Generator();
+
+        $salts = array_map(function ($key) use($generator) {
+            return sprintf("%s='%s'", $key, $generator->generateSalt());
         }, self::$KEYS);
 
-        self::writeToFile(sprintf('%s/.env', $root), $salts, $event);
+        $generator->writeToFile(sprintf('%s/.env', $root), $salts, $event);
     }
 
     /**
