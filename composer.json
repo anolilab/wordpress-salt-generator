@@ -24,6 +24,7 @@
         "ircmaxell/random-lib"                           : "^1.1"
     },
     "require-dev": {
+        "composer/composer"                              : "^1",
         "fabpot/php-cs-fixer"                            : "~1.10",
         "mockery/mockery"                                : "~0.9.4",
         "phpunit/phpunit"                                : "~4.8.8",

@@ -63,9 +63,11 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testFailWriteToFile()
     {
         $gen = new SubGenerator();
+
         $io = Mock::mock('Composer\IO\IOInterface')
           ->shouldReceive('write')
           ->getMock();
+
         $mock = Mock::mock('Composer\Script\Event')
           ->shouldReceive('getIO')
           ->andReturn($io)
@@ -79,6 +81,49 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
             $gen->writeToFile(__DIR__.'/.env', $salts, $mock),
             1
         );
+    }
+
+    public function testFailIfFileExist()
+    {
+        $gen = new Generator();
+
+        $config = Mock::mock('Composer\Config');
+        $config->shouldReceive('get')->andReturnUsing(function ($key) {
+            if ($key === 'home') {
+                return __DIR__;
+            }
+        });
+
+        $composer = Mock::mock('Composer\Composer')
+          ->shouldReceive('getConfig')
+          ->andReturn($config)
+          ->getMock();
+
+        $io = Mock::mock('Composer\IO\IOInterface')
+          ->shouldReceive('write')
+          ->shouldReceive('isInteractive')
+          ->andReturn(false)
+          ->getMock();
+
+        $mock = Mock::mock('Composer\Script\Event')
+          ->shouldReceive('getIO')
+          ->andReturn($io)
+          ->shouldReceive('getComposer')
+          ->andReturn($composer)
+          ->getMock();
+
+        file_put_contents(__DIR__.'/.env.example', '');
+
+        $gen::addSalts($mock);
+
+        @unlink(__DIR__.'/.env.example');
+
+        $this->assertEquals(
+            $gen::addSalts($mock),
+            1
+        );
+
+        @unlink(__DIR__.'/.env');
     }
 
     public function testAddSalts()

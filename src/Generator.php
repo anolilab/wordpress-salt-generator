@@ -53,6 +53,10 @@ class Generator
         $root     = preg_replace("/\/vendor/", '', $composer->getConfig()->get('vendor-dir'));
         $io       = $event->getIO();
 
+        if (file_exists(sprintf('%s/.env', $root))) {
+            return 1;
+        }
+
         if (!$io->isInteractive()) {
             $generateSalts = $composer->getConfig()->get('generate-salts');
         } else {
